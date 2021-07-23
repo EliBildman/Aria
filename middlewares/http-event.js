@@ -1,4 +1,4 @@
-const events = require('./events');
+const events = require('../events/events');
 
 module.exports = (req, res, next) => {
 

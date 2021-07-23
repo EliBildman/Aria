@@ -7,7 +7,7 @@ routine_manager.register_routines();
 const port = 3000;
 
 //middleware
-const http_event = require('./events/http-event');
+const http_event = require('./middlewares/http-event');
 
 app.use(express.static(__dirname + '/public'));
 app.use(express.urlencoded({extended: true}));

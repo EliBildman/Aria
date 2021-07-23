@@ -1,9 +1,9 @@
 
 const send_req = () => {
-    $.post("/io/room-active", {
-            "num": 10
-        },
-        () => {},
-        "application/json"
-    );
+    $.post({
+        url: '/io/test',
+        data: "",
+        success: console.log,
+        contentType: 'application/json'
+    });
 };
