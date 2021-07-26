@@ -1,6 +1,5 @@
 
 module.exports = (payload, param) => {
-    let n = parseFloat(param)
-    payload.num += n
+    payload.num += param.n
     return payload;
 };
