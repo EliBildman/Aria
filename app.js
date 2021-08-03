@@ -1,8 +1,10 @@
 const express = require('express');
 const app = express();
 const routine_manager = require('./events/routine-manager');
+const schedule_manager = require('./scheduling/schedule-manager');
 
-routine_manager.register_routines();
+routine_manager.initialize_routines();
+schedule_manager.initialize_schedule();
 
 const port = 3000;
 
