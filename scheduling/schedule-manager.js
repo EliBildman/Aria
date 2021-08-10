@@ -16,7 +16,7 @@ const schedule = require('../configs/schedule.json');
 const register_timed_event = (timed_event) => {
     const time_str = timed_event.cron_string;
     cron.schedule(time_str, (timestamp) => {
-        console.log(`[System]': Scheduled event ID: ${timed_event.ID}`);
+        console.log(`[System]: Running scheduled event ID: ${timed_event.ID}`);
         for( routine of timed_event.routines ) {
             run_routine({timestamp}, routine);
         }
@@ -24,11 +24,9 @@ const register_timed_event = (timed_event) => {
 }
 
 const initialize_schedule = () => {
-
     for( timed_event of schedule ) {
         register_timed_event(timed_event);
     }
-
 }
 
 module.exports = {

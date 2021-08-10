@@ -10,11 +10,9 @@ const register_routine = (routine) => {
 }
 
 const initialize_routines = () => {
-    
     for(routine of routines) {    
         register_routine(routine);
     }
-
 };
 
 const get_routine_runner = (routine) => {
@@ -29,5 +27,6 @@ const get_routine_runner = (routine) => {
 
 module.exports = {
     initialize_routines,
-    register_routine
+    register_routine,
+    get_routine_runner
 }

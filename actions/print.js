@@ -1,11 +1,11 @@
 
 module.exports = (payload, param) => {
     if(param.feild) {
-        console.log(payload[param.feild]);
+        console.log('[Print]:', payload[param.feild]);
     } else if (param.msg) {
-        console.log(param.msg)
+        console.log('[Print]:', param.msg)
     } else {
-        console.log(payload);
+        console.log('[Print]:', payload);
     }
     return payload;
 };
