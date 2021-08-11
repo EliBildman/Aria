@@ -19,9 +19,11 @@ app.use(http_event);
 //routes
 const io_router = require('./routes/io-router');
 const schedule_router = require('./routes/schedule-router');
+const routine_router = require('./routes/routine-router');
 
 app.use('/io', io_router);
 app.use('/schedules', schedule_router);
+app.use('/routines', routine_router);
 
 
 //index

@@ -1,10 +1,9 @@
 
 const send_req = () => {
-    $.ajax({
-        url: '/schedules',
-        type: 'DELETE',
+    $.get({
+        url: '/routines',
         data: {
-            ID: 1
+            ID: 0
         },
         success: console.log
     });
@@ -12,14 +11,16 @@ const send_req = () => {
 
 
 const send_req2 = () => {
-    $.ajax({
-        url: '/schedules',
-        type: 'POST',
+    $.post({
+        url: '/routines',
         data: JSON.stringify({
-            "ID": 1,
-            "name": "Foo numba 2",
-            "cron_string": "* * * 1 1 1",
-            "routines": []
+            method: "update",
+            ID: 2,
+            routine: {
+                "name": "Foo 2!",
+                "triggers": [],
+                "sequence": []
+            }
         }),
         success: console.log,
         contentType: 'application/json'

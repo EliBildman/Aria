@@ -3,20 +3,21 @@ const router = express.Router();
 const fs = require('fs');
 const routine_manager = require('../events/routine-manager');
 
-const routines_path = 'configs/routines.json';
+
+const routine_path = 'configs/routines.json';
 
 router.get('/', (req, res) => {
 
-    routines = JSON.parse( fs.readFileSync(routines_path) );
+    routines = JSON.parse( fs.readFileSync(routine_path) );
     
     const baseURL = 'http://' + req.headers.host + '/';
     const url = new URL(req.url, baseURL);
     const ID = url.searchParams.get('ID');
 
-    if(ID == null) { //if no ID provided, return all routines
+    if(ID == null) { //if no ID provided, return all routined events
         res.json(routines);
     } else {
-        const event = routines.find(ev => ev.ID == ID);
+        const event = routines.find(r=> r.ID == ID);
         res.json(event);
     }
 
@@ -25,52 +26,43 @@ router.get('/', (req, res) => {
 
 router.post('/', (req, res) => {
 
-    routines = JSON.parse( fs.readFileSync(routines_path) );
+    routines = JSON.parse( fs.readFileSync(routine_path) );
+    const method = req.body.method;
 
-    const new_routine = req.body;
-    routines.push(new_routine);
+    if(method == "create") {
 
-    fs.writeFileSync(routines_path, JSON.stringify(routines) );
+        const new_sched = req.body.routine;
 
+        let ID = 0;
+        while(routines.some(r=> r.ID == ID)) ID++; //super temporary fix for generating IDs
+        new_sched.ID = ID;
+
+        routines.push(new_sched);
+
+        
+    } else if (method == "update") {
+
+        const updated_routine = req.body.routine;
+        const ID = req.body.ID;
+        updated_routine.ID = ID;
+        const old_routine_ind = routines.findIndex( r=> r.ID == ID );
+
+        routines[old_routine_ind] = updated_routine;
+        
+    } else if (method == "delete") {
+        
+        const ID = req.body.ID
+
+        const del_ind = routines.findIndex( r=> r.ID == ID );
+        routines.splice(del_ind, 1);
+
+    }
+    
+    fs.writeFileSync(routine_path, JSON.stringify(routines) );
     res.status(200);
     res.end();
 
     routine_manager.initialize_routines();
-
-});
-
-
-router.put('/', (req, res) => {
-
-    routines = JSON.parse( fs.readFileSync(routines_path) );
-
-    const updated_routine = req.body;
-    const old_routine_ind = routines.findIndex( r => r.ID == updated_routine.ID );
-    routines[old_routine_ind] = updated_routine;
-
-    fs.writeFileSync(routines_path, JSON.stringify(routines) );
-
-    res.status(200);
-    res.end();
-
-});
-
-
-router.delete('/', (req, res) => {
-
-    routines = JSON.parse( fs.readFileSync(routines_path) );
-
-    const baseURL = 'http://' + req.headers.host + '/';
-    const url = new URL(req.url, baseURL);
-    const ID = url.searchParams.get('ID');
-
-    const del_ind = routines.findIndex( r => r.ID == ID );
-    routines.splice(del_ind, 1);
-
-    fs.writeFileSync(routines_path, JSON.stringify(routines) );
-
-    res.status(200);
-    res.end();
 
 });
 
