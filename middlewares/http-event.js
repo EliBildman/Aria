@@ -1,9 +1,16 @@
 const events = require('../events/events');
+// const url = require('url');
 
 module.exports = (req, res, next) => {
 
-    const event = `${req.method} ${req.url}`;
-    const payload = req.body;
+    const baseURL = 'http://' + req.headers.host + '/';
+    const url = new URL(req.url, baseURL);
+
+    const event = `${req.method} ${url.pathname}`;
+    const payload = {
+        body: req.body,
+        query: url.searchParams,
+    }
 
     events.run(event, payload);
 

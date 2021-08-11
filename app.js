@@ -1,10 +1,10 @@
 const express = require('express');
 const app = express();
 const routine_manager = require('./events/routine-manager');
-const schedule_manager = require('./scheduling/schedule-manager');
+const schedule_manager = require('./events/schedule-manager');
 
 routine_manager.initialize_routines();
-schedule_manager.initialize_schedule();
+schedule_manager.initialize_schedules();
 
 const port = 3000;
 
@@ -18,10 +18,10 @@ app.use(http_event);
 
 //routes
 const io_router = require('./routes/io-router');
-const web_router = require('./routes/web-router');
+const schedule_router = require('./routes/schedule-router');
 
 app.use('/io', io_router);
-app.use(web_router);
+app.use('/schedules', schedule_router);
 
 
 //index

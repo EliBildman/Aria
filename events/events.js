@@ -19,7 +19,7 @@ const on = (event, callback) => {
 
 const run = async (event, payload) => {
 
-    console.log(`Event triggered: ${event}`);
+    console.log(`[Events]: Triggered: ${event}`);
 
     const on_event = listeners.filter(listener => listener.event === event);
 
