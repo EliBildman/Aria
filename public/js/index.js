@@ -12,14 +12,11 @@ const send_req = () => {
 
 const send_req2 = () => {
     $.post({
-        url: '/routines',
+        url: '/events',
         data: JSON.stringify({
-            method: "update",
-            ID: 2,
-            routine: {
-                "name": "Foo 2!",
-                "triggers": [],
-                "sequence": []
+            method: "delete",
+            event: {
+                "ID": 1
             }
         }),
         success: console.log,

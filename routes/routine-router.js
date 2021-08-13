@@ -3,8 +3,8 @@ const router = express.Router();
 const fs = require('fs');
 const routine_manager = require('../events/routine-manager');
 
-
 const routine_path = 'configs/routines.json';
+
 
 router.get('/', (req, res) => {
 
@@ -31,13 +31,13 @@ router.post('/', (req, res) => {
 
     if(method == "create") {
 
-        const new_sched = req.body.routine;
+        const new_routine = req.body.routine;
 
         let ID = 0;
         while(routines.some(r=> r.ID == ID)) ID++; //super temporary fix for generating IDs
-        new_sched.ID = ID;
+        new_routine.ID = ID;
 
-        routines.push(new_sched);
+        routines.push(new_routine);
 
         
     } else if (method == "update") {

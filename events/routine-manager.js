@@ -1,26 +1,16 @@
 const fs = require('fs');
 
-const events = require('./events');
 const routines_path = 'configs/routines.json';
-
 const actions_path = '../actions/'
 
-const register_routine = (routine) => {
-    for(trigger of routine.triggers) {
-        events.on(trigger, get_routine_runner(routine));
-    }
-}
 
-const initialize_routines = () => {
+const get_routine_runner = (routine_id) => {
 
-    const routines = JSON.parse( fs.readFileSync(routines_path) );
+    routines = JSON.parse( fs.readFileSync(routines_path) );
 
-    for(routine of routines) {    
-        register_routine(routine);
-    }
-};
+    routine = routines.find(r => 'ID' in r && r.ID == routine_id);
+    if(routine == null) throw "what the heck";
 
-const get_routine_runner = (routine) => {
     return async (payload) => {
         console.log("[Routines]: Starting ID: " + routine.ID);
         for(action of routine.sequence) {
@@ -30,8 +20,7 @@ const get_routine_runner = (routine) => {
     }
 }
 
+
 module.exports = {
-    initialize_routines,
-    register_routine,
     get_routine_runner
 }
