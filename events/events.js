@@ -31,7 +31,7 @@ const run = async (event, payload) => {
         const new_event = {
             ID,
             name: event,
-            routines = []
+            routines: []
         }
 
     }
