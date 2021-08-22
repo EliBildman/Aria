@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
 
 const schedule_manager = require('./events/schedule-manager');
 const event_manager = require('./events/event-manager');
@@ -15,6 +16,15 @@ const http_event = require('./middlewares/http-event');
 app.use(express.static(__dirname + '/public'));
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
+
+const corsOptions ={
+    origin: '*', 
+    credentials: true,            //access-control-allow-credentials:true
+    optionSuccessStatus: 200
+}
+
+app.use(cors(corsOptions));
+
 app.use(http_event);
 
 //routes
