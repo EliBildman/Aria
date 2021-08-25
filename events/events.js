@@ -35,8 +35,8 @@ const run = async (event, payload) => {
             routines: []
         };
 
-        events.push(new_event);
-        fs.writeFileSync(events_path, JSON.stringify(events) );
+        saved_events.push(new_event);
+        fs.writeFileSync(events_path, JSON.stringify(saved_events) );
 
     }
 

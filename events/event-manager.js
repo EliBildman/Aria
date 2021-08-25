@@ -7,7 +7,8 @@ const events_path = 'configs/events.json';
 const register_event = (event) => {
 
     for(routine of event.routines) {
-        events.on(event.name, routine_manager.get_routine_runner(routine.ID));
+        const runner = routine_manager.get_routine_runner(routine.ID);
+        events.on(event.name, runner);
     }
 
 }
@@ -15,7 +16,6 @@ const register_event = (event) => {
 const initialize_events = () => {
 
     events.clear_all();
-    // console.log('ran')
 
     const saved_events = JSON.parse( fs.readFileSync(events_path) );
 
