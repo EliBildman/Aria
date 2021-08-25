@@ -1,6 +1,7 @@
-const listeners = [];
+const fs = require('fs');
 
 const events_path = 'configs/events.json';
+let listeners = [];
 
 const on = (event, callback) => {
 
@@ -32,7 +33,10 @@ const run = async (event, payload) => {
             ID,
             name: event,
             routines: []
-        }
+        };
+
+        events.push(new_event);
+        fs.writeFileSync(events_path, JSON.stringify(events) );
 
     }
 
@@ -44,8 +48,15 @@ const run = async (event, payload) => {
 
 };
 
+const clear_all = () => {
+
+    listeners = [];
+
+}
+
 
 module.exports = {
     on,
     run,
+    clear_all,
 }

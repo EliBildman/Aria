@@ -14,6 +14,9 @@ const register_event = (event) => {
 
 const initialize_events = () => {
 
+    events.clear_all();
+    // console.log('ran')
+
     const saved_events = JSON.parse( fs.readFileSync(events_path) );
 
     for(_event of saved_events) {    
