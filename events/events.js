@@ -49,9 +49,7 @@ const run = async (event, payload) => {
 };
 
 const clear_all = () => {
-
     listeners = [];
-
 }
 
 
