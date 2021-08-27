@@ -59,7 +59,7 @@ router.post('/', (req, res) => {
     } else if (method == "run") {
 
         const ID = req.body.ID;
-        const name = saved_events.find(e => e.ID == ID).name;
+        const name = saved_events.find( e => e.ID == ID ).name;
 
         events.run(name, {});
 

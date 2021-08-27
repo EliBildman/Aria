@@ -45,24 +45,29 @@ router.post('/', (req, res) => {
         const updated_routine = req.body.routine;
         const ID = req.body.ID;
         updated_routine.ID = ID;
-        const old_routine_ind = routines.findIndex( r=> r.ID == ID );
+        const old_routine_ind = routines.findIndex( r => r.ID == ID );
 
         routines[old_routine_ind] = updated_routine;
         
     } else if (method == "delete") {
         
-        const ID = req.body.ID
+        const ID = req.body.ID;
 
         const del_ind = routines.findIndex( r=> r.ID == ID );
         routines.splice(del_ind, 1);
+
+    } else if (method == "run") {
+
+        const ID = req.body.ID;
+        const runner = routine_manager.get_routine_runner(ID);
+
+        runner({});
 
     }
     
     fs.writeFileSync(routine_path, JSON.stringify(routines) );
     res.status(200);
     res.end();
-
-    routine_manager.initialize_routines();
 
 });
 

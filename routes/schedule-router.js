@@ -42,13 +42,14 @@ router.post('/', (req, res) => {
         
     } else if (method == "update") {
 
+        const ID = req.body.ID;
         const updated_sched = req.body.schedule;
-        const old_sched_ind = schedules.findIndex( ev => ev.ID == updated_sched.ID );
+        const old_sched_ind = schedules.findIndex( ev => ev.ID == ID );
         schedules[old_sched_ind] = updated_sched;
         
     } else if (method == "delete") {
         
-        const ID = url.searchParams.get('ID');
+        const ID = req.body.ID;
 
         const del_ind = schedules.findIndex( ev => ev.ID == ID );
         schedules.splice(del_ind, 1);
