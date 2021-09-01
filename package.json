@@ -12,6 +12,8 @@
         "express": "^4.17.1",
         "fs": "0.0.1-security",
         "node-cron": "^3.0.0",
+        "rgb-to-hsl": "0.0.3",
+        "tplink-lightbulb": "^1.7.4",
         "url": "^0.11.0"
     }
 }

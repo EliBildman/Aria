@@ -1,9 +1,12 @@
-const events = require('../scheduling/events')
-const get_device = require('../tools/helpers').get_device;
-
 // const leds = require(join(__dirname, 'led-controller'));
 const bulb_controller = require('./bulb-controller');
 const plug_controller = require('./plug-controller');
+
+const get_device = (info, devices) => {
+    for( d of devices ) {
+        if(matches_fields(info, d)) return d;
+    }
+};
 
 const get_all_lights = () => {
     return bulb_controller.get_bulbs().concat(plug_controller.get_plugs(_function = 'LIGHT'));
