@@ -1,9 +1,10 @@
 const fs = require('fs');
 
 const events_path = 'configs/events.json';
+let perm_listeners = []; //not reset from api
 let listeners = [];
 
-const on = (event, callback) => {
+const on = (event, callback, is_perm = false) => {
 
     const listener = {
         event,
@@ -13,7 +14,12 @@ const on = (event, callback) => {
         },
     }
 
-    listeners.push(listener);
+    if(is_perm) {
+        perm_listeners.push(listener);
+    } else {
+        listeners.push(listener);
+    }
+
     return listener;
 
 };
@@ -40,7 +46,7 @@ const run = async (event, payload) => {
 
     }
 
-    const on_event = listeners.filter(listener => listener.event === event);
+    const on_event = listeners.concat(perm_listeners).filter(listener => listener.event === event)
 
     for( listener of on_event ) {
         listener.callback(payload);

@@ -3,6 +3,8 @@ const events = require('./events');
 const routine_manager = require('./routine-manager');
 
 const events_path = 'configs/events.json';
+const trigger_folder = 'events/triggers'
+const trigger_folder_rel = 'triggers'
 
 const register_event = (event) => {
 
@@ -22,6 +24,12 @@ const initialize_events = () => {
     for(_event of saved_events) {    
         register_event(_event);
     }
+
+    fs.readdirSync(trigger_folder).forEach(cont => {
+        if(cont.includes('.js')) {
+            require('./' + trigger_folder_rel + '/' + cont).register();
+        }
+    });
 
 };
 
