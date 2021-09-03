@@ -1,14 +1,18 @@
+const e = require('express');
 const express = require('express');
 const router = express.Router();
 const fs = require('fs');
+const { eventNames } = require('process');
 const routine_manager = require('../events/routine-manager');
 
 const routine_path = 'configs/routines.json';
+const events_path = 'configs/events.json'
+const schedule_path = 'configs/schedules.json'
 
 
 router.get('/', (req, res) => {
 
-    routines = JSON.parse( fs.readFileSync(routine_path) );
+    let routines = JSON.parse( fs.readFileSync(routine_path) );
     
     const baseURL = 'http://' + req.headers.host + '/';
     const url = new URL(req.url, baseURL);
@@ -26,42 +30,47 @@ router.get('/', (req, res) => {
 
 router.post('/', (req, res) => {
 
-    routines = JSON.parse( fs.readFileSync(routine_path) );
+    let routines = JSON.parse( fs.readFileSync(routine_path) );
     const method = req.body.method;
 
     if(method == "create") {
 
-        const new_routine = req.body.routine;
-
-        let ID = 0;
-        while(routines.some(r=> r.ID == ID)) ID++; //super temporary fix for generating IDs
-        new_routine.ID = ID;
-
-        routines.push(new_routine);
-
+        routine_manager.create_routine(req.body.routine);
         
     } else if (method == "update") {
 
-        const updated_routine = req.body.routine;
-        const ID = req.body.ID;
-        updated_routine.ID = ID;
-        const old_routine_ind = routines.findIndex( r => r.ID == ID );
-
-        routines[old_routine_ind] = updated_routine;
+        routine_manager.update_routine(req.body.ID, req.body.routine);
         
     } else if (method == "delete") {
         
-        const ID = req.body.ID;
+        routine_manager.delete_routine(req.body.ID);
 
-        const del_ind = routines.findIndex( r=> r.ID == ID );
-        routines.splice(del_ind, 1);
+        //need to remove routine from existing events and schedules
+        let events = JSON.parse( fs.readFileSync(events_path) );
+        for(let e of events) {
+            for(let i = 0; i < e.routines.lenth; i++) {
+                if(e.routines[i].ID == ID) {
+                    e.routines.splice(i, 1);
+                }
+            }
+        }
+        fs.writeFileSync(events_path, JSON.stringify(events) );
+
+        let schedules = JSON.parse( fs.readFileSync(schedule_path) );
+        for(let s of schedules) {
+            for(let i = 0; i < s.routines.lenth; i++) {
+                if(s.routines[i].ID == ID) {
+                    s.routines.splice(i, 1);
+                    console.log(i)
+                }
+            }
+        }
+        fs.writeFileSync(schedule_path, JSON.stringify(schedules) );
 
     } else if (method == "run") {
 
         const ID = req.body.ID;
-        const runner = routine_manager.get_routine_runner(ID);
-
-        runner({});
+        
 
     }
     

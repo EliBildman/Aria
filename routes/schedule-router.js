@@ -26,41 +26,24 @@ router.get('/', (req, res) => {
 
 router.post('/', (req, res) => {
 
-    schedules = JSON.parse( fs.readFileSync(schedule_path) );
     const method = req.body.method;
 
     if(method == "create") {
 
-        const new_sched = req.body.schedule;
-
-        let ID = 0;
-        while(schedules.some(ev => ev.ID == ID)) ID++; //super temporary fix for generating IDs
-        new_sched.ID = ID;
-
-        schedules.push(new_sched);
-
+        schedule_manager.create_schedule(req.body.schedule);
         
     } else if (method == "update") {
 
-        const ID = req.body.ID;
-        const updated_sched = req.body.schedule;
-        const old_sched_ind = schedules.findIndex( ev => ev.ID == ID );
-        schedules[old_sched_ind] = updated_sched;
+        schedule_manager.update_schedule(req.body.ID, req.body.schedule);
         
     } else if (method == "delete") {
         
-        const ID = req.body.ID;
-
-        const del_ind = schedules.findIndex( ev => ev.ID == ID );
-        schedules.splice(del_ind, 1);
+        schedule_manager.delete_schedule(req.body.ID);
 
     }
     
-    fs.writeFileSync(schedule_path, JSON.stringify(schedules) );
     res.status(200);
     res.end();
-
-    schedule_manager.initialize_schedules();
 
 });
 

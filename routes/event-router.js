@@ -26,50 +26,29 @@ router.get('/', (req, res) => {
 
 router.post('/', (req, res) => {
 
-    saved_events = JSON.parse( fs.readFileSync(event_path) );
+    
     const method = req.body.method;
 
     if(method == "create") {
 
-        const new_event = req.body.event;
+        event_manager.create_event(req.body.event);
 
-        let ID = 0;
-        while(saved_events.some(ev => ev.ID == ID)) ID++; //super temporary fix for generating IDs
-        new_event.ID = ID;
-
-        saved_events.push(new_event);
-
-        
     } else if (method == "update") {
 
-        const updated_event = req.body.event;
-        const ID = req.body.ID;
-        updated_event.ID = ID;
-        const old_event_ind = saved_events.findIndex( ev => ev.ID == ID );
-
-        saved_events[old_event_ind] = updated_event;
+        event_manager.update_event(req.body.ID, req.body.event);
         
     } else if (method == "delete") {
         
-        const ID = req.body.ID;
-
-        const del_ind = saved_events.findIndex( ev => ev.ID == ID );
-        saved_events.splice(del_ind, 1);
+        event_manager.delete_event(req.body.ID);
 
     } else if (method == "run") {
 
-        const ID = req.body.ID;
-        const name = saved_events.find( e => e.ID == ID ).name;
-
-        events.run(name, {});
+        event_manager.run_event(req.body.ID);
 
     }
     
-    fs.writeFileSync(event_path, JSON.stringify(saved_events) );
     res.status(200);
     res.end();
-
-    event_manager.initialize_events();
 
 });
 
