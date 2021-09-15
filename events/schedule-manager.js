@@ -15,7 +15,7 @@ const fs = require('fs');
 let cron_events = [];
 const schedules_path = 'configs/schedules.json';
 
-const register_timed_event = (timed_event) => {
+module.exports.register_timed_event = (timed_event) => {
     const time_str = timed_event.cron_string;
     cron_events.push(cron.schedule(time_str, (timestamp) => {
         console.log(`[Schedule]: Starting ID: ${timed_event.ID}`);
@@ -25,7 +25,7 @@ const register_timed_event = (timed_event) => {
     }));
 }
 
-const initialize_schedules = () => {
+module.exports.initialize_schedules = () => {
 
     for (ev of cron_events) {
         ev.stop(); //no way to delete?
@@ -35,13 +35,39 @@ const initialize_schedules = () => {
     const schedules = JSON.parse(fs.readFileSync(schedules_path));
 
     for (timed_event of schedules) {
-        register_timed_event(timed_event);
+        this.register_timed_event(timed_event);
     }
 }
 
-const create_schedule = (new_sched) => {
+module.exports.prune_routine = (routine_ID) => {
 
-    const schedules = JSON.parse(fs.readFileSync(schedule_path));
+    const schedules = this.get_schedules();
+
+    for(sched of schedules) {
+
+        const new_routines = [];
+        for(routine of sched.routines) {
+            if(routine.ID != routine_ID) new_routines.push(routine);
+        }
+
+        sched.routines = new_routines;
+
+    }
+
+    fs.writeFileSync(schedules_path, JSON.stringify(schedules));
+    this.initialize_schedules();
+
+}
+
+module.exports.get_schedules = () => {
+
+    return JSON.parse(fs.readFileSync(schedules_path));
+
+}
+
+module.exports.create_schedule = (new_sched) => {
+
+    const schedules = get_schedules();
 
     let ID = 0;
     while (schedules.some(ev => ev.ID == ID)) ID++; //super temporary fix for generating IDs
@@ -49,39 +75,31 @@ const create_schedule = (new_sched) => {
 
     schedules.push(new_sched);
 
-    fs.writeFileSync(schedule_path, JSON.stringify(schedules));
-    initialize_schedules();
+    fs.writeFileSync(schedules_path, JSON.stringify(schedules));
+    this.initialize_schedules();
 
 }
 
-const update_schedule = (ID, updated_sched) => {
+module.exports.update_schedule = (ID, updated_sched) => {
 
-    const schedules = JSON.parse(fs.readFileSync(schedule_path));
+    const schedules = this.get_schedules();
 
     const old_sched_ind = schedules.findIndex(ev => ev.ID == ID);
     schedules[old_sched_ind] = updated_sched;
 
-    fs.writeFileSync(schedule_path, JSON.stringify(schedules));
-    initialize_schedules();
+    fs.writeFileSync(schedules_path, JSON.stringify(schedules));
+    this.initialize_schedules();
 
 }
 
-const delete_schedule = (ID) => {
+module.exports.delete_schedule = (ID) => {
 
-    const schedules = JSON.parse(fs.readFileSync(schedule_path));
+    const schedules = get_schedules();
 
     const del_ind = schedules.findIndex(ev => ev.ID == ID);
     schedules.splice(del_ind, 1);
 
-    fs.writeFileSync(schedule_path, JSON.stringify(schedules));
-    initialize_schedules();
+    fs.writeFileSync(schedules_path, JSON.stringify(schedules));
+    this.initialize_schedules();
 
-}
-
-module.exports = {
-    initialize_schedules,
-    register_timed_event,
-    create_schedule,
-    update_schedule,
-    delete_schedule
 }

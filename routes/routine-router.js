@@ -46,26 +46,26 @@ router.post('/', (req, res) => {
         routine_manager.delete_routine(req.body.ID);
 
         //need to remove routine from existing events and schedules
-        let events = JSON.parse( fs.readFileSync(events_path) );
-        for(let e of events) {
-            for(let i = 0; i < e.routines.lenth; i++) {
-                if(e.routines[i].ID == ID) {
-                    e.routines.splice(i, 1);
-                }
-            }
-        }
-        fs.writeFileSync(events_path, JSON.stringify(events) );
+        // let events = JSON.parse( fs.readFileSync(events_path) );
+        // for(let e of events) {
+        //     for(let i = 0; i < e.routines.lenth; i++) {
+        //         if(e.routines[i].ID == ID) {
+        //             e.routines.splice(i, 1);
+        //         }
+        //     }
+        // }
+        // fs.writeFileSync(events_path, JSON.stringify(events) );
 
-        let schedules = JSON.parse( fs.readFileSync(schedule_path) );
-        for(let s of schedules) {
-            for(let i = 0; i < s.routines.lenth; i++) {
-                if(s.routines[i].ID == ID) {
-                    s.routines.splice(i, 1);
-                    console.log(i)
-                }
-            }
-        }
-        fs.writeFileSync(schedule_path, JSON.stringify(schedules) );
+        // let schedules = JSON.parse( fs.readFileSync(schedule_path) );
+        // for(let s of schedules) {
+        //     for(let i = 0; i < s.routines.lenth; i++) {
+        //         if(s.routines[i].ID == ID) {
+        //             s.routines.splice(i, 1);
+        //             console.log(i)
+        //         }
+        //     }
+        // }
+        // fs.writeFileSync(schedule_path, JSON.stringify(schedules) );
 
     } else if (method == "run") {
 
@@ -74,7 +74,6 @@ router.post('/', (req, res) => {
 
     }
     
-    fs.writeFileSync(routine_path, JSON.stringify(routines) );
     res.status(200);
     res.end();
 

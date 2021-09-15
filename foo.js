@@ -1,2 +1,6 @@
 
-require('./app.js')
+module.exports.foo = () => {
+    console.log('a');
+}
+
+this.foo();
