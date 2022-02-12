@@ -16,7 +16,6 @@ let cron_events = [];
 const schedules_path = 'configs/schedules.json';
 
 
-
 module.exports.register_timed_event = (timed_event) => {
 
     const time_str = timed_event.cron_string;
@@ -26,7 +25,7 @@ module.exports.register_timed_event = (timed_event) => {
             run_routine({ timestamp }, routine);
         }
     }));
-    
+
 }
 
 module.exports.initialize_schedules = () => {
@@ -36,7 +35,7 @@ module.exports.initialize_schedules = () => {
     }
 
     cron_events = [];
-    const schedules = JSON.parse(fs.readFileSync(schedules_path));
+    const schedules = this.get_schedules()
 
     for (timed_event of schedules) {
         this.register_timed_event(timed_event);
@@ -67,10 +66,10 @@ module.exports.get_schedules = () => {
 
 module.exports.create_schedule = (new_sched) => {
 
-    const schedules = get_schedules();
+    const schedules = this.get_schedules();
 
     let ID = 0;
-    while (schedules.some(ev => ev.ID == ID)) ID++; //super temporary fix for generating IDs
+    while (schedules.some(ev => ev.ID === ID)) ID++; //super temporary fix for generating IDs
     new_sched.ID = ID;
 
     schedules.push(new_sched);
@@ -83,8 +82,11 @@ module.exports.create_schedule = (new_sched) => {
 module.exports.update_schedule = (ID, updated_sched) => {
 
     const schedules = this.get_schedules();
+    const old_sched_ind = schedules.findIndex(ev => ev.ID === ID);
 
-    const old_sched_ind = schedules.findIndex(ev => ev.ID == ID);
+    if (old_sched_ind == -1) {
+        throw `Bad id: ${ID}`
+    }
     schedules[old_sched_ind] = updated_sched;
 
     fs.writeFileSync(schedules_path, JSON.stringify(schedules));
@@ -94,7 +96,7 @@ module.exports.update_schedule = (ID, updated_sched) => {
 
 module.exports.delete_schedule = (ID) => {
 
-    const schedules = get_schedules();
+    const schedules = this.get_schedules();
 
     const del_ind = schedules.findIndex(ev => ev.ID == ID);
     schedules.splice(del_ind, 1);

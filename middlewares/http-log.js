@@ -1,4 +1,4 @@
-const PRINT_LOGS = false;
+const PRINT_LOGS = true;
 
 module.exports = (req, res, next) => {
 

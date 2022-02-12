@@ -3,7 +3,6 @@ const router = express.Router();
 const fs = require('fs');
 const schedule_manager = require('../managers/schedule-manager');
 
-
 const schedule_path = 'configs/schedules.json';
 
 router.get('/', (req, res) => {
