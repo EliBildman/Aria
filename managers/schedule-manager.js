@@ -15,7 +15,10 @@ const fs = require('fs');
 let cron_events = [];
 const schedules_path = 'configs/schedules.json';
 
+
+
 module.exports.register_timed_event = (timed_event) => {
+
     const time_str = timed_event.cron_string;
     cron_events.push(cron.schedule(time_str, (timestamp) => {
         console.log(`[Schedule]: Starting ID: ${timed_event.ID}`);
@@ -23,6 +26,7 @@ module.exports.register_timed_event = (timed_event) => {
             run_routine({ timestamp }, routine);
         }
     }));
+    
 }
 
 module.exports.initialize_schedules = () => {
@@ -49,9 +53,7 @@ module.exports.prune_routine = (routine_ID) => {
         for(routine of sched.routines) {
             if(routine.ID != routine_ID) new_routines.push(routine);
         }
-
         sched.routines = new_routines;
-
     }
 
     fs.writeFileSync(schedules_path, JSON.stringify(schedules));
@@ -60,9 +62,7 @@ module.exports.prune_routine = (routine_ID) => {
 }
 
 module.exports.get_schedules = () => {
-
     return JSON.parse(fs.readFileSync(schedules_path));
-
 }
 
 module.exports.create_schedule = (new_sched) => {

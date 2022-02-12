@@ -10,23 +10,31 @@ const actions = [];
 
 fs.readdirSync(actions_path).forEach(cont => {
     if (cont.includes('.js')) {
-        actions[cont.substr(0, cont.length - 3)] = require('./' + actions_path_rel + '/' + cont); //load in all actions ahead of time
+        actions[cont.substring(0, cont.length - 3)] = require('./' + actions_path_rel + '/' + cont); //load in all actions ahead of time
         // there is for sure a better way to do this
     }
 });
+
+const get_routines = () => {
+    return JSON.parse(fs.readFileSync(routine_path))
+}
+
+const save_routines = (routines) => {
+    fs.writeFileSync(routine_path, JSON.stringify(routines));
+}
 
 module.exports.get_routine_runner = (routine_id) => {
 
     return async (payload) => {
 
-        routines = JSON.parse(fs.readFileSync(routine_path));
+        routines = get_routines()
 
         routine = routines.find(r => 'ID' in r && r.ID == routine_id);
         if (routine == null) throw "what the heck";
 
         console.log("[Routines]: Starting ID: " + routine.ID);
-        for (action of routine.sequence) {
-            let callback = actions[action.name];
+        for (let action of routine.sequence) {
+            const callback = actions[action.name];
             payload = await callback(payload, action.param);
         }
     }
@@ -34,7 +42,7 @@ module.exports.get_routine_runner = (routine_id) => {
 
 module.exports.create_routine = (new_routine) => {
 
-    let routines = JSON.parse(fs.readFileSync(routine_path));
+    let routines = get_routines();
 
     let ID = 0;
     while (routines.some(r => r.ID == ID)) ID++; //super temporary fix for generating IDs
@@ -42,26 +50,26 @@ module.exports.create_routine = (new_routine) => {
 
     routines.push(new_routine);
 
-    fs.writeFileSync(routine_path, JSON.stringify(routines));
+    save_routines(routines);
 
 }
 
 module.exports.update_routine = (ID, updated_routine) => {
 
-    let routines = JSON.parse(fs.readFileSync(routine_path));
+    let routines = get_routines();
 
     updated_routine.ID = ID;
     const old_routine_ind = routines.findIndex(r => r.ID == ID);
 
     routines[old_routine_ind] = updated_routine;
 
-    fs.writeFileSync(routine_path, JSON.stringify(routines));
+    save_routines(routines);
 
 }
 
 module.exports.delete_routine = (ID) => {
 
-    let routines = JSON.parse(fs.readFileSync(routine_path));
+    let routines = get_routines();
 
     const del_ind = routines.findIndex(r => r.ID == ID);
     routines.splice(del_ind, 1);
@@ -69,13 +77,13 @@ module.exports.delete_routine = (ID) => {
     event_manager.prune_routine(ID);
     schedule_manager.prune_routine(ID); //remove this routine from existing events/schedlues
 
-    fs.writeFileSync(routine_path, JSON.stringify(routines));
+    save_routines(routines);
 
 }
 
 module.exports.run_routine = (ID) => {
 
-    const runner = get_routine_runner(ID);
+    const runner = this.get_routine_runner(ID);
     runner({});
 
 }

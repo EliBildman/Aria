@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const fs = require('fs');
-const schedule_manager = require('../events/schedule-manager');
+const schedule_manager = require('../managers/schedule-manager');
 
 
 const schedule_path = 'configs/schedules.json';

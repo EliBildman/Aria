@@ -1,4 +1,7 @@
-
+//{
+//  feild?: string,
+//  msg?: string
+//}
 module.exports = (payload, param) => {
     if(param.feild) {
         console.log('[Print]:', payload[param.feild]);

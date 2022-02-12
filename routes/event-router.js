@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const fs = require('fs');
-const event_manager = require('../events/event-manager');
+const event_manager = require('../managers/event-manager');
 const events = require('../events/events');
 
 const event_path = 'configs/events.json';

@@ -1,11 +1,8 @@
-const { exception } = require('console');
-const fs = require('fs');
-const { get_routine_runner } = require('../events/routine-manager');
+const { get_routine_runner } = require('../managers/routine-manager');
 
-const routines_file = 'configs/routines.json'
-const actions_path = '../actions/'
-
-//{name: str/id: int}
+//{
+//  name: str
+//}
 module.exports = (payload, param) => {
 
     let routine_id = param.ID;

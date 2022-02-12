@@ -1,6 +1,1 @@
-
-module.exports.foo = () => {
-    console.log('a');
-}
-
-this.foo();
+const tpapi = import('tplink-lightbulb');

@@ -26,9 +26,8 @@ const set_active = () => {
 }
 
 const register = () => {
-    events.on('POST /io/room-active', set_active, true);
+    events.on('POST /io/room-active', set_active);
 };
-
 
 module.exports = {
     register
