@@ -26,10 +26,12 @@ const port = 3000;
 //middleware
 const http_event = require('./middlewares/http-event');
 const http_log = require('./middlewares/http-log');
+const fileUpload = require('express-fileupload');
 
 app.use(express.static(__dirname + '/public'));
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
+app.use(fileUpload())
 
 const corsOptions ={
     origin: '*', 
@@ -47,13 +49,14 @@ const schedule_router = require('./routes/schedule-router');
 const routine_router = require('./routes/routine-router');
 const event_router = require('./routes/event-router');
 const action_router = require('./routes/action-router');
+const script_router = require('./routes/script-router');
 
 app.use('/io', io_router);
 app.use('/schedules', schedule_router);
 app.use('/routines', routine_router);
 app.use('/events', event_router);
 app.use('/actions', action_router);
-
+app.use('/scripts', script_router);
 
 //index
 app.get('/', (req, res) => {

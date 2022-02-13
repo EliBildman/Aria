@@ -1,6 +1,7 @@
 const fs = require('fs');
 const events = require('../events/events');
 const routine_manager = require('./routine-manager');
+const action_manager = require('./action-manager')
 
 const events_path = 'configs/events.json';
 
@@ -12,7 +13,7 @@ let event_listeners = [];
 module.exports.register_event = (event) => {
 
     for (routine of event.routines) {
-        const runner = routine_manager.get_routine_runner(routine.ID);
+        const runner = action_manager.get_routine_runner(routine.ID);
         event_listeners.push( events.on(event.name, runner) );
     }
 

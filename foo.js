@@ -1,8 +1,7 @@
-const { Client } = require('tplink-smarthome-api');
+const child_proccess = require('child_process');
 
-const client = new Client();
+const proc = child_proccess.spawn('python', ['data/scripts/hello_world.py']);
 
-client.startDiscovery().on('device-new', (device) => {
-    device.getSysInfo().then(console.log);
-    device.setPowerState(false);
-  });
+proc.stdout.on('data', (buffer) => {
+    console.log(buffer.toString());
+});
