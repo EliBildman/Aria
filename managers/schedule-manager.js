@@ -13,7 +13,7 @@ const fs = require('fs');
 //  │ │ │ │ │ │
 
 let cron_events = [];
-const schedules_path = 'configs/schedules.json';
+const schedules_path = 'data/configs/schedules.json';
 
 
 module.exports.register_timed_event = (timed_event) => {

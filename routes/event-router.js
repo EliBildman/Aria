@@ -4,11 +4,9 @@ const fs = require('fs');
 const event_manager = require('../managers/event-manager');
 const events = require('../events/events');
 
-const event_path = 'configs/events.json';
-
 router.get('/', (req, res) => {
 
-    saved_events = JSON.parse( fs.readFileSync(event_path) );
+    const saved_events = event_manager.get_events()
     
     const baseURL = 'http://' + req.headers.host + '/';
     const url = new URL(req.url, baseURL);
@@ -26,7 +24,6 @@ router.get('/', (req, res) => {
 
 router.post('/', (req, res) => {
 
-    
     const method = req.body.method;
 
     if(method == "create") {

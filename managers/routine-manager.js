@@ -3,7 +3,7 @@ const event_manager = require('./event-manager');
 const schedule_manager = require('./schedule-manager');
 const action_manager = require('./action-manager');
 
-const routine_path = 'configs/routines.json';
+const routine_path = 'data/configs/routines.json';
 
 
 module.exports.get_routines = () => {

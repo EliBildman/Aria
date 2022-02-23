@@ -1,7 +1,7 @@
 const fs = require('fs');
 const child_proccess = require('child_process');
 
-const scripts_desc_path = 'configs/scripts.json';
+const scripts_desc_path = 'data/configs/scripts.json';
 const scripts_path = 'data/scripts/';
 
 
@@ -67,7 +67,7 @@ module.exports.run_script = (ID, args) => {
         const proc = child_proccess.spawn('python', [`${scripts_path}${desc.file_name}`].concat(args));
         proc.stdout.on('data', (buffer) => {
             const msg = buffer.toString();
-            console.log(`[SCRIPT RUNNER]: ${desc.file_name} -> ${msg}`);
+            process.stdout.write(`[SCRIPT RUNNER]: ${desc.file_name} -> ${msg}`);
         });
     }
 

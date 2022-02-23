@@ -11,7 +11,7 @@ const schedule_path = 'configs/schedules.json'
 
 router.get('/', (req, res) => {
 
-    let routines = JSON.parse( fs.readFileSync(routine_path) );
+    let routines = routine_manager.get_routines();
     
     const baseURL = 'http://' + req.headers.host + '/';
     const url = new URL(req.url, baseURL);
@@ -32,22 +32,14 @@ router.post('/', (req, res) => {
     const method = req.body.method;
 
     if(method == "create") {
-
         routine_manager.create_routine(req.body.routine);
-        
     } else if (method == "update") {
-
         routine_manager.update_routine(req.body.ID, req.body.routine);
-        
     } else if (method == "delete") {
-        
         routine_manager.delete_routine(req.body.ID);
-
     } else if (method == "run") {
-
         const ID = req.body.ID;
         routine_manager.run_routine(ID);
-
     }
     
     res.status(200);

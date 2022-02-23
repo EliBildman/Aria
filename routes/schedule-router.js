@@ -3,11 +3,9 @@ const router = express.Router();
 const fs = require('fs');
 const schedule_manager = require('../managers/schedule-manager');
 
-const schedule_path = 'configs/schedules.json';
-
 router.get('/', (req, res) => {
 
-    schedules = JSON.parse( fs.readFileSync(schedule_path) );
+    schedules = schedule_manager.get_schedules()
     
     const baseURL = 'http://' + req.headers.host + '/';
     const url = new URL(req.url, baseURL);

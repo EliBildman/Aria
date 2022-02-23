@@ -3,7 +3,7 @@ const events = require('../events/events');
 const routine_manager = require('./routine-manager');
 const action_manager = require('./action-manager')
 
-const events_path = 'configs/events.json';
+const events_path = 'data/configs/events.json';
 
 const system_triggers = 'events/system-triggers'
 const trigger_folder_rel = '../events/system-triggers'
@@ -24,7 +24,7 @@ module.exports.initialize_events = () => {
     event_listeners.forEach(listener => listener.cancel());
     event_listeners = [];
 
-    const saved_events = get_events();
+    const saved_events = this.get_events();
 
     for (let _event of saved_events) {
         this.register_event(_event);
@@ -34,7 +34,7 @@ module.exports.initialize_events = () => {
 
 module.exports.prune_routine = (routine_ID) => {
 
-    const saved_events = get_events();
+    const saved_events = this.get_events();
 
     for(let _event of saved_events) {
 
@@ -51,7 +51,7 @@ module.exports.prune_routine = (routine_ID) => {
 
 }
 
-const get_events = () => {
+module.exports.get_events = () => {
     return JSON.parse(fs.readFileSync(events_path));
 }
 
@@ -62,7 +62,7 @@ const save_events = (events) => {
 
 module.exports.create_event = (new_event) => {
 
-    const saved_events = get_events();
+    const saved_events = this.get_events();
 
     let ID = 0;
     while (saved_events.some(ev => ev.ID == ID)) ID++; //super temporary fix for generating IDs
@@ -76,7 +76,7 @@ module.exports.create_event = (new_event) => {
 
 module.exports.update_event = (ID, updated_event) => {
 
-    const saved_events = get_events();
+    const saved_events = this.get_events();
 
     updated_event.ID = ID;
     const old_event_ind = saved_events.findIndex(ev => ev.ID == ID);
@@ -88,7 +88,7 @@ module.exports.update_event = (ID, updated_event) => {
 
 module.exports.delete_event = (ID) => {
 
-    const saved_events = get_events();
+    const saved_events = this.get_events();
 
     const del_ind = saved_events.findIndex(ev => ev.ID == ID);
     saved_events.splice(del_ind, 1);
@@ -99,7 +99,7 @@ module.exports.delete_event = (ID) => {
 
 module.exports.run_event = (ID) => {
 
-    const saved_events = get_events();
+    const saved_events = this.get_events();
 
     const name = saved_events.find(e => e.ID == ID).name;
     events.run(name, {}); //payload?

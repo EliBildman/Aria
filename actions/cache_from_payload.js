@@ -1,9 +1,13 @@
 const fs = require('fs');
-
 const cache_file = "./actions/cache/value-cache.json"
 
+module.exports.param = {
+    "payload_name": "_string",
+    "cache_name": "_string"
+}
+
 //param: {payload_name: str, cache_name: str}
-module.exports = (payload, param) => {
+module.exports.run = (payload, param) => {
 
     let cache_str = fs.readFileSync(cache_file, 'utf8');
 

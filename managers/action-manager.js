@@ -26,7 +26,7 @@ module.exports.get_routine_runner = (routine_id) => {
 
         console.log("[Routines]: Starting ID: " + routine.ID);
         for (let action of routine.sequence) {
-            const callback = actions[action.name];
+            const callback = actions[action.name].run;
             payload = await callback(payload, action.param);
         }
     }

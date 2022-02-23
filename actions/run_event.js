@@ -1,7 +1,10 @@
 const events = require('../events/events');
 
-//{event: str}
-module.exports = (payload, param) => {
+module.exports.param = {
+    "event": "_string"
+}
+
+module.exports.run = (payload, param) => {
     events.run(param.event, payload);
     return payload;
 };
