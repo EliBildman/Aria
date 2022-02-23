@@ -4,15 +4,21 @@ const routine_manager = require('./routine-manager');
 const actions_path = 'actions';
 const actions_path_rel = '../actions'
 
-const actions = [];
+const actions = {};
 
 module.exports.initialize_actions = () => {
+
     fs.readdirSync(actions_path).forEach(cont => {
         if (cont.includes('.js')) {
             actions[cont.substring(0, cont.length - 3)] = require('./' + actions_path_rel + '/' + cont); //load in all actions ahead of time
             // there is for sure a better way to do this
         }
     });
+
+}
+
+module.exports.get_actions = () => {
+    return actions;
 }
 
 module.exports.get_routine_runner = (routine_id) => {
