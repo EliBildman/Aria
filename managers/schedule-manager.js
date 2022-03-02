@@ -1,5 +1,5 @@
 const cron = require('node-cron');
-const run_routine = require('../actions/run_routine');
+const { run } = require('../actions/run_routine');
 const fs = require('fs');
 
 //  ----- cron string format -----
@@ -20,9 +20,9 @@ module.exports.register_timed_event = (timed_event) => {
 
     const time_str = timed_event.cron_string;
     cron_events.push(cron.schedule(time_str, (timestamp) => {
-        console.log(`[Schedule]: Starting ID: ${timed_event.ID}`);
+        console.log(`[Schedule]: Starting "${timed_event.name}"`);
         for (routine of timed_event.routines) {
-            run_routine({ timestamp }, routine);
+            run({ timestamp }, routine);
         }
     }));
 
@@ -68,9 +68,7 @@ module.exports.create_schedule = (new_sched) => {
 
     const schedules = this.get_schedules();
 
-    let ID = 0;
-    while (schedules.some(ev => ev.ID === ID)) ID++; //super temporary fix for generating IDs
-    new_sched.ID = ID;
+    new_sched.ID = Date.now();
 
     schedules.push(new_sched);
 

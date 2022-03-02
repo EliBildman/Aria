@@ -1,6 +1,6 @@
 
 module.exports.param = {
-    "ms": "_number",
+    "ms": "*number",
 }
 
 module.exports.run = (payload, param) => {

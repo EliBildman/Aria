@@ -18,17 +18,6 @@ router.get('/', (req, res) => { //maybe one day will save info on each action
         }
     }))
 
-    // fs.readdirSync(actions_folder).forEach(cont => {
-    //     if(cont.includes('.js')) {
-    //         actions.push({
-    //             name: cont.substring(0, cont.length - 3),
-    //             param: 
-    //         });
-    //     }
-    // });
-
-    // res.json(actions);
-    
 });
 
 

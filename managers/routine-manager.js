@@ -18,13 +18,8 @@ const save_routines = (routines) => {
 module.exports.create_routine = (new_routine) => {
 
     let routines = this.get_routines();
-
-    let ID = 0;
-    while (routines.some(r => r.ID == ID)) ID++; //super temporary fix for generating IDs
-    new_routine.ID = ID;
-
+    new_routine.ID = Date.now();
     routines.push(new_routine);
-
     save_routines(routines);
 
 }
@@ -62,12 +57,3 @@ module.exports.run_routine = (ID) => {
     runner({});
 
 }
-
-
-// module.exports = {
-//     get_routine_runner,
-//     create_routine,
-//     update_routine,
-//     delete_routine,
-//     run_routine
-// }

@@ -26,17 +26,11 @@ router.post('/', (req, res) => {
     const method = req.body.method;
 
     if(method == "create") {
-
         schedule_manager.create_schedule(req.body.schedule);
-        
     } else if (method == "update") {
-
-        schedule_manager.update_schedule(req.body.ID, req.body.schedule);
-        
+        schedule_manager.update_schedule(req.body.ID, req.body.schedule); 
     } else if (method == "delete") {
-        
         schedule_manager.delete_schedule(req.body.ID);
-
     }
     
     res.status(200);

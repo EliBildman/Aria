@@ -63,11 +63,7 @@ const save_events = (events) => {
 module.exports.create_event = (new_event) => {
 
     const saved_events = this.get_events();
-
-    let ID = 0;
-    while (saved_events.some(ev => ev.ID == ID)) ID++; //super temporary fix for generating IDs
-    new_event.ID = ID;
-
+    new_event.ID = Date.now();
     saved_events.push(new_event);
 
     save_events(saved_events);

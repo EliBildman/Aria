@@ -1,7 +1,7 @@
 const { get_routine_runner } = require('../managers/action-manager');
 
 module.exports.param = {
-    "ID": "_number"
+    "ID": "*number"
 }
 
 module.exports.run = (payload, param) => {

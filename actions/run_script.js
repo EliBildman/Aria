@@ -1,7 +1,7 @@
 const script_manager = require('../managers/script-manager');
 
 module.exports.param = {
-    "ID": "_number",
+    "ID": "*number",
 }
 
 module.exports.run = (payload, param) => {

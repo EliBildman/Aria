@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const events_path = 'configs/events.json';
+const events_path = 'data/configs/events.json';
 
 let listeners = [];
 
@@ -24,7 +24,7 @@ const on = (event, callback) => {
 
 const run = async (event, payload) => {
 
-    console.log(`[Events]: Triggered: ${event}`);
+    console.log(`[Events]: Fired "${event}"`);
     const saved_events = JSON.parse( fs.readFileSync(events_path) ); //check if doesnt exist yet
     if(!saved_events.some(ev => ev.name == event)) {
         

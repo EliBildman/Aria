@@ -1,7 +1,7 @@
 const events = require('../events/events');
 
 module.exports.param = {
-    "event": "_string"
+    "event": "*string"
 }
 
 module.exports.run = (payload, param) => {

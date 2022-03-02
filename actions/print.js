@@ -1,7 +1,7 @@
 
 module.exports.param = {
-    "?field": "_string",
-    "?msg": "_string",
+    "?field": "*string",
+    "?msg": "*string",
 }
 
 module.exports.run = (payload, param) => {

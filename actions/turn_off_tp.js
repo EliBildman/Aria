@@ -1,7 +1,7 @@
 const tp_controller = require('../controllers/tp-controller');
 
 module.exports.param = {
-    "name": "_string"
+    "name": "*string"
 }
 
 module.exports.run = (payload, param) => {

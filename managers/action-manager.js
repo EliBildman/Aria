@@ -24,16 +24,16 @@ module.exports.get_actions = () => {
 module.exports.get_routine_runner = (routine_id) => {
 
     return async (payload) => {
-
         routines = routine_manager.get_routines()
 
         routine = routines.find(r => 'ID' in r && r.ID == routine_id);
         if (routine == null) throw "what the heck";
 
-        console.log("[Routines]: Starting ID: " + routine.ID);
+        console.log(`[Routines]: Starting "${routine.name}"`);
         for (let action of routine.sequence) {
             const callback = actions[action.name].run;
             payload = await callback(payload, action.param);
+            if(payload.END_RUN === true) break;
         }
     }
 }

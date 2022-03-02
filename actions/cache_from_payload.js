@@ -2,8 +2,8 @@ const fs = require('fs');
 const cache_file = "./actions/cache/value-cache.json"
 
 module.exports.param = {
-    "payload_name": "_string",
-    "cache_name": "_string"
+    "payload_name": "*string",
+    "cache_name": "*string"
 }
 
 //param: {payload_name: str, cache_name: str}
