@@ -1,5 +1,6 @@
 const fs = require('fs');
 const child_proccess = require('child_process');
+const hr = require('@tsmx/human-readable');
 
 const scripts_desc_path = 'data/configs/scripts.json';
 const scripts_path = 'data/scripts/';
@@ -22,18 +23,20 @@ module.exports.add_script = (file) => {
     let type = 'bash';
     if (file.name.includes('.py')) {
         type = 'python';
-    } else if (file.name.includes('.js')) {
+    }
+    if (file.name.includes('.js')) {
         type = 'javascript';
     }
 
+    const size = hr.fromBytes(file.size);
+
     const new_desc = {
         file_name: file.name,
-        type
+        type,
+        size,
     }
 
-    let ID = 0;
-    while (script_decriptions.some(script => script.ID === ID)) ID++; //super temporary fix for generating IDs
-    new_desc.ID = ID;
+    new_desc.ID = Date.now();
 
     const replace_ind = script_decriptions.findIndex(script => script.file_name === file.name);
 
@@ -62,9 +65,18 @@ module.exports.run_script = (ID, args) => {
 
     const saved_scripts = this.get_scripts();
     const desc = saved_scripts.find(script => script.ID == ID);
+
+    console.log(`[SCRIPT RUNNER]: Running "${desc.file_name}"`)
     
     if(desc.type === 'python') {
         const proc = child_proccess.spawn('python', [`${scripts_path}${desc.file_name}`].concat(args));
+        proc.stdout.on('data', (buffer) => {
+            const msg = buffer.toString();
+            process.stdout.write(`[SCRIPT RUNNER]: ${desc.file_name} -> ${msg}`);
+        });
+    }
+    if(desc.type === 'javascript') {
+        const proc = child_proccess.spawn('node', [`${scripts_path}${desc.file_name}`].concat(args));
         proc.stdout.on('data', (buffer) => {
             const msg = buffer.toString();
             process.stdout.write(`[SCRIPT RUNNER]: ${desc.file_name} -> ${msg}`);

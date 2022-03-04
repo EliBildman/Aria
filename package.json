@@ -8,6 +8,7 @@
         "stop-daemon": "pm2 stop app.js"
     },
     "dependencies": {
+        "@tsmx/human-readable": "^1.0.7",
         "cors": "^2.8.5",
         "express": "^4.17.1",
         "express-fileupload": "^1.3.1",
