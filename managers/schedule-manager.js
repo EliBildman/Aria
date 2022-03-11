@@ -1,6 +1,7 @@
 const cron = require('node-cron');
 const { run } = require('../actions/run_routine');
 const fs = require('fs');
+const { v4: uuidv4 } = require('uuid');
 
 //  ----- cron string format -----
 //  ┌────────────── second (optional)
@@ -68,7 +69,7 @@ module.exports.create_schedule = (new_sched) => {
 
     const schedules = this.get_schedules();
 
-    new_sched.ID = Date.now();
+    new_sched.ID = uuidv4();
 
     schedules.push(new_sched);
 

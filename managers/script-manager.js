@@ -1,6 +1,7 @@
 const fs = require('fs');
 const child_proccess = require('child_process');
 const hr = require('@tsmx/human-readable');
+const { v4: uuidv4 } = require('uuid');
 
 const scripts_desc_path = 'data/configs/scripts.json';
 const scripts_path = 'data/scripts/';
@@ -36,7 +37,7 @@ module.exports.add_script = (file) => {
         size,
     }
 
-    new_desc.ID = Date.now();
+    new_desc.ID = uuidv4();
 
     const replace_ind = script_decriptions.findIndex(script => script.file_name === file.name);
 

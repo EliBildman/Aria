@@ -5,21 +5,22 @@ const cors = require('cors');
 //managers
 const schedule_manager = require('./managers/schedule-manager');
 const event_manager = require('./managers/event-manager');
-const action_manager = require('./managers/action-manager');
+
 
 //initialize user events and schedules
 schedule_manager.initialize_schedules();
 event_manager.initialize_events();
-action_manager.initialize_actions();
 
 //initialize system triggers
 event_manager.initialize_system_triggers();
 
-//controllers
-const tp_controller = require('./controllers/tp-controller');
+//heads
+const heads = require('./heads/cataloag');
 
 //initialize controlers
-tp_controller.initialize()
+heads.heads.forEach((head) => {
+    head.initialize();
+})
 
 const port = 3000;
 

@@ -2,6 +2,7 @@ const fs = require('fs');
 const events = require('../events/events');
 const routine_manager = require('./routine-manager');
 const action_manager = require('./action-manager')
+const { v4: uuidv4 } = require('uuid');
 
 const events_path = 'data/configs/events.json';
 
@@ -63,7 +64,7 @@ const save_events = (events) => {
 module.exports.create_event = (new_event) => {
 
     const saved_events = this.get_events();
-    new_event.ID = Date.now();
+    new_event.ID = uuidv4();
     saved_events.push(new_event);
 
     save_events(saved_events);

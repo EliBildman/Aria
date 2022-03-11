@@ -2,6 +2,7 @@ const fs = require('fs');
 const event_manager = require('./event-manager');
 const schedule_manager = require('./schedule-manager');
 const action_manager = require('./action-manager');
+const { v4: uuidv4 } = require('uuid');
 
 const routine_path = 'data/configs/routines.json';
 
@@ -18,7 +19,8 @@ const save_routines = (routines) => {
 module.exports.create_routine = (new_routine) => {
 
     let routines = this.get_routines();
-    new_routine.ID = Date.now();
+    new_routine.ID = uuidv4();
+
     routines.push(new_routine);
     save_routines(routines);
 
@@ -32,6 +34,7 @@ module.exports.update_routine = (ID, updated_routine) => {
     const old_routine_ind = routines.findIndex(r => r.ID == ID);
 
     routines[old_routine_ind] = updated_routine;
+    
 
     save_routines(routines);
 
