@@ -1,8 +1,8 @@
 const fs = require('fs');
 const events = require('../events/events');
-const routine_manager = require('./routine-manager');
 const action_manager = require('./action-manager')
 const { v4: uuidv4 } = require('uuid');
+const head_catalog = require('../heads/cataloag');
 
 const events_path = 'data/configs/events.json';
 
@@ -19,6 +19,21 @@ module.exports.register_event = (event) => {
     }
 
 };
+
+module.exports.load_head_events = () => {
+
+    const saved_events = this.get_events();
+
+    for (let event_name of head_catalog.events) {
+        if (!saved_events.some(event => event.name === event_name)) {
+            this.create_event({
+                name: event_name,
+                routines: [],
+            }, true);
+        }
+    } 
+
+}
 
 module.exports.initialize_events = () => {
 
@@ -38,14 +53,11 @@ module.exports.prune_routine = (routine_ID) => {
     const saved_events = this.get_events();
 
     for(let _event of saved_events) {
-
         const new_routines = [];
         for(routine of _event.routines) {
             if(routine.ID != routine_ID) new_routines.push(routine);
         }
-
         _event.routines = new_routines;
-
     }
 
     save_events(saved_events)
@@ -61,10 +73,11 @@ const save_events = (events) => {
     this.initialize_events();
 }
 
-module.exports.create_event = (new_event) => {
+module.exports.create_event = (new_event, permenant) => {
 
     const saved_events = this.get_events();
     new_event.ID = uuidv4();
+    new_event.permenant = (permenant ?? false);
     saved_events.push(new_event);
 
     save_events(saved_events);

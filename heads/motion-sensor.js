@@ -15,6 +15,9 @@ const take_new_connection = (connection) => {
 module.exports = {
     name: 'MotionSensor',
     initialize,
-    events: [],
+    events: [
+        "active",
+        "inactive",
+    ],
     actions: [],
 }

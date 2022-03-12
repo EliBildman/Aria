@@ -11,6 +11,9 @@ const event_manager = require('./managers/event-manager');
 schedule_manager.initialize_schedules();
 event_manager.initialize_events();
 
+//load in events served by heads
+event_manager.load_head_events();
+
 //initialize system triggers
 event_manager.initialize_system_triggers();
 

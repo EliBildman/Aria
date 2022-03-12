@@ -57,6 +57,37 @@ const Math = {
     }
 }
 
+const SetField = {
+    name: "SetField",
+    param: {
+        "key": "*string",
+        "value": "*string",
+        "type": "number&string&bool"
+    },
+    run: (payload, param) => {
+        if (param.type == 'number') param.value = parseFloat(param.value);
+        if (param.type == 'bool') param.value = (param.value === 'true');
+        payload[param.key] = param.value;
+        return payload;
+    }
+}
+
+const If = {
+    name: "If",
+    param: {
+        "field": "*string",
+        "operator": ">&<&=",
+        "value": "*number"
+    },
+    run: (payload, param) => {
+        const op = param.operator;
+        if(op === '>' && !(payload[param.field] > param.value)) payload.END_RUN = true; 
+        if(op === '<' && !(payload[param.field] < param.value)) payload.END_RUN = true; 
+        if(op === '=' && !(payload[param.field] === param.value)) payload.END_RUN = true; 
+        return payload;
+    }
+}
+
 module.exports = {
     name: 'Util',
     initialize,
@@ -65,5 +96,7 @@ module.exports = {
         Print,
         Wait,
         Math,
+        SetField,
+        If,
     ],
 }
