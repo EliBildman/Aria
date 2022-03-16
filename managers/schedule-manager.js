@@ -1,5 +1,5 @@
 const cron = require('node-cron');
-const { run } = require('../actions/run_routine');
+const routine_manager = require('./routine-manager');
 const fs = require('fs');
 const { v4: uuidv4 } = require('uuid');
 
@@ -20,10 +20,10 @@ const schedules_path = 'data/configs/schedules.json';
 module.exports.register_timed_event = (timed_event) => {
 
     const time_str = timed_event.cron_string;
-    cron_events.push(cron.schedule(time_str, (timestamp) => {
+    cron_events.push(cron.schedule(time_str, async (timestamp) => {
         console.log(`[Schedule]: Starting "${timed_event.name}"`);
         for (routine of timed_event.routines) {
-            run({ timestamp }, routine);
+            await routine_manager.run_routine(routine.ID, timestamp);
         }
     }));
 

@@ -54,9 +54,11 @@ module.exports.delete_routine = (ID) => {
 
 }
 
-module.exports.run_routine = (ID) => {
+module.exports.run_routine = (ID, payload) => {
+
+    if (payload === undefined) payload = {};
 
     const runner = action_manager.get_routine_runner(ID);
-    runner({});
+    return runner(payload);
 
 }

@@ -1,4 +1,5 @@
 const fs = require('fs');
+const event_manager = require('../managers/event-manager')
 
 const events_path = 'data/configs/events.json';
 
@@ -24,20 +25,13 @@ const on = (event, callback) => {
 
 const run = async (event, payload) => {
 
-    console.log(`[Events]: Fired "${event}"`);
+    console.log(`[EVENTS]: Fired "${event}"`);
     const saved_events = JSON.parse( fs.readFileSync(events_path) ); //check if doesnt exist yet
-    if(!saved_events.some(ev => ev.name == event)) {
-        
-        let ID = 0;
-        while(saved_events.some(ev => ev.ID == ID)) ID++; //should put all of this in event_manager eventually
-        const new_event = {
-            ID,
+    if(!saved_events.some(ev => ev.name == event)) {     
+        event_manager.create_event({
             name: event,
-            routines: []
-        };
-        saved_events.push(new_event);
-        fs.writeFileSync(events_path, JSON.stringify(saved_events) );
-
+            routines: [],
+        })
     }
 
     const on_event = listeners.filter(listener => listener.event === event)

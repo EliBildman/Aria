@@ -1,6 +1,6 @@
 const fs = require('fs');
 const events = require('../events/events');
-const action_manager = require('./action-manager')
+const routine_manager = require('./routine-manager');
 const { v4: uuidv4 } = require('uuid');
 const head_catalog = require('../heads/cataloag');
 
@@ -13,10 +13,13 @@ let event_listeners = [];
 
 module.exports.register_event = (event) => {
 
-    for (routine of event.routines) {
-        const runner = action_manager.get_routine_runner(routine.ID);
-        event_listeners.push( events.on(event.name, runner) );
+    const callback = async () => {
+        for (routine of event.routines) {
+            await routine_manager.run_routine(routine.ID, {event_name: event.name});
+        }
     }
+
+    event_listeners.push( events.on(event.name, callback) );
 
 };
 
