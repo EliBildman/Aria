@@ -24,7 +24,7 @@
 //         return plugs.filter(p => p.function == _function);
 //     }
 
-// };  
+// };
 
 // const turn_on = (plug) => {
 
@@ -53,4 +53,3 @@
 // module.exports = {
 //     get_plugs
 // };
-
