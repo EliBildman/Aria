@@ -2,3 +2,5 @@
 node_modules/*
 configs/*
 data/**
+**.log
+.env

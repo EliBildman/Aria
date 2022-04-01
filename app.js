@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const socketio = require('socket.io');
 const cors = require('cors');
+require('dotenv').config();
 
 //managers
 const schedule_manager = require('./managers/schedule-manager');
