@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const socketio = require('socket.io');
 const cors = require('cors');
+const { SystemLogger } = require('./loggers');
 require('dotenv').config();
 
 //managers
@@ -44,7 +45,9 @@ app.use(cors(corsOptions));
 app.use(http_log);
 // app.use(http_event);
 
-const http_server = app.listen(port, () => console.log(`listening on ${port}`));
+const http_server = app.listen(port, () => {
+    SystemLogger.info(`Listening on ${port}`);
+});
 const io = new socketio.Server(http_server);
 
 //routes
@@ -67,11 +70,3 @@ io_socket(io);
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/views/index.html');
 });
-
-// io_server.on('connection', (socket) => {
-//     console.log('connection');
-//     socket.on("msg", (msg) => {
-//         console.log(msg);
-//         socket.emit("msg", "hello there");
-//     })
-// });

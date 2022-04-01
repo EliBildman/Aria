@@ -1,24 +1,7 @@
-var nodemailer = require("nodemailer");
+const { HeadLogger } = require('./loggers');
 
-var transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: "elibotman@gmail.com",
-    pass: "thebotman123",
-  },
-});
+logger = HeadLogger('FOO');
 
-var mailOptions = {
-  from: "elibotman@gmail.com",
-  to: "esbildman@gmail.com",
-  subject: "Testo",
-  text: "That was easy!",
-};
+logger.verbose('hello');
 
-transporter.sendMail(mailOptions, function (error, info) {
-  if (error) {
-    console.log(error);
-  } else {
-    console.log("Email sent: " + info.response);
-  }
-});
+// console.log('\u001b[34minfo\u001b[39m');

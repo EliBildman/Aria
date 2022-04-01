@@ -1,5 +1,7 @@
-var nodemailer = require('nodemailer');
+const nodemailer = require('nodemailer');
+const { HeadLogger } = require('../loggers');
 
+const logger = HeadLogger('EMAIL');
 let transporter;
 
 const initialize = () => {
@@ -22,9 +24,9 @@ const send_email = (to, contents, subject) => {
 
     transporter.sendMail(mail_options, (error, _info) => {
         if (error) {
-            console.log(error);
+            logger.error(error);
         } else {
-            console.log(`[EMAIL]: Sent ${subject}`);
+            logger.info(`Sent ${subject}`);
         }
     });
 };

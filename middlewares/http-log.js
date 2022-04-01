@@ -1,10 +1,12 @@
-const PRINT_LOGS = true;
+const { ManagerLogger } = require('../loggers');
 
-module.exports = (req, res, next) => {
-  const baseURL = "http://" + req.headers.host + "/";
-  const url = new URL(req.url, baseURL);
+const logger = ManagerLogger('HTTP');
 
-  if (PRINT_LOGS) console.log(`[HTTP]: ${req.method} ${url.pathname}`);
+module.exports = (req, _res, next) => {
+    const baseURL = 'http://' + req.headers.host + '/';
+    const url = new URL(req.url, baseURL);
 
-  next();
+    logger.verbose(`${req.method} ${url.pathname}`);
+
+    next();
 };
