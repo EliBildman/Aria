@@ -1,5 +1,5 @@
 const fs = require('fs');
-const events = require('../events/events');
+const events = require('../events');
 const routine_manager = require('./routine-manager');
 const { v4: uuidv4 } = require('uuid');
 const head_catalog = require('../heads/cataloag');

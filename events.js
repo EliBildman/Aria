@@ -1,6 +1,6 @@
 const fs = require('fs');
-const event_manager = require('../managers/event-manager');
-const { SystemLogger } = require('../loggers');
+const event_manager = require('./managers/event-manager');
+const { SystemLogger } = require('./loggers');
 
 const events_path = 'data/configs/events.json';
 
